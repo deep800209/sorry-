@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>I'm Sorry</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f8d7da;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #721c24;
+        }
+        #buttons {
+            margin-top: 20px;
+        }
+        .btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            cursor: pointer;
+            margin: 5px;
+        }
+        .forgive {
+            background-color: #28a745;
+            color: white;
+        }
+        .dont-forgive {
+            background-color: #dc3545;
+            color: white;
+            transition: transform 0.1s;
+        }
+        .vibrate {
+            animation: shake 0.3s;
+            animation-iteration-count: 3;
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(5px); }
+        }
+        .emoji {
+            font-size: 50px;
+            margin-top: 10px;
+        }
+        .flowers {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>I am sorry</h1>
+    <div id="buttons">
+        <button class="btn forgive" onclick="handleForgive()">Forgive</button>
+        <button class="btn dont-forgive" id="dontForgive" onclick="handleDontForgive()">Don't Forgive</button>
+    </div>
+    <script>
+        let attempts = 0;
+        let firstClick = true;
+
+        function handleForgive() {
+            if (attempts < 2) {
+                alert("Why do you want to forgive even if it was a big mistake?");
+                vibrateButton();
+                increaseSize();
+                attempts++;
+            } else if (attempts === 2) {
+                setTimeout(() => {
+                    let confirmation = confirm("Are you really sure that you want to forgive him and continue the relationship?");
+                    if (!confirmation) {
+                        vibrateButton();
+                        increaseSize();
+                        return;
+                    }
+                    attempts++;
+                }, 100);
+            } else {
+                setTimeout(() => {
+                    document.body.innerHTML = "<h1>I am sorry for this mistake and it won't happen again.</h1><div class='emoji'>😔</div><div class='flowers'>🌼🌸🌺🌻🌷</div>";
+                }, 500);
+            }
+        }
+
+        function handleDontForgive() {
+            if (firstClick) {
+                document.body.innerHTML = "<h1>Okay</h1><div class='emoji'>😔</div>";
+                firstClick = false;
+            } else {
+                increaseSize();
+            }
+        }
+
+        function increaseSize() {
+            let dontForgiveBtn = document.getElementById("dontForgive");
+            let currentSize = window.getComputedStyle(dontForgiveBtn).fontSize;
+            let newSize = parseFloat(currentSize) + 10 + "px";
+            dontForgiveBtn.style.fontSize = newSize;
+        }
+
+        function vibrateButton() {
+            let dontForgiveBtn = document.getElementById("dontForgive");
+            dontForgiveBtn.classList.add("vibrate");
+            setTimeout(() => {
+                dontForgiveBtn.classList.remove("vibrate");
+            }, 900);
+        }
+    </script>
+</body>
+</html>
